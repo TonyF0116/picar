@@ -33,7 +33,6 @@ def A_star(start, goal, map):
         closed_set.add(x)
 
         for y in neighbor_nodes(x):
-            # print(y)
             if y in closed_set or (y[0] > 99 or y[1] > 99 or y[0] < 0 or y[1] < 0) or map[y[0]][y[1]] == 1:
                 continue
             tentative_g_score = g_score[x] + euclidean_distance(x, y)
@@ -71,7 +70,6 @@ def reconstruct_path(came_from, start, goal):
     operations = []
     for t in result:
         operations.append([t[0], t[1]])
-    print(operations)
 
     while n > 0:
         operations[n][0] -= operations[n-1][0]
@@ -80,7 +78,7 @@ def reconstruct_path(came_from, start, goal):
 
     operations[0][0] -= start[0]
     operations[0][1] -= start[1]
-
+    print(operations)
     return operations
 
 
@@ -101,6 +99,7 @@ def main():
     map = np.zeros((100, 100))
     current = (50, 0)
     direction = "forward"
+
     while True:
         fc.servo.set_angle(-90)
         map = am.advanced_scan_step(map)
@@ -111,7 +110,7 @@ def main():
         for i in range(5):
             if i >= len(path):
                 break
-            if path[i] == (0, 1):
+            if path[i] == [0, 1]:
                 if direction == "left":
                     fc.turn_right(10)
                     time.sleep(1)
@@ -124,7 +123,7 @@ def main():
                 direction = "forward"
                 fc.forward(10)
                 time.sleep(0.1)
-            elif path[i] == (0, -1):
+            elif path[i] == [0, -1]:
                 if direction == "left":
                     fc.turn_left(10)
                     time.sleep(1)
@@ -137,7 +136,7 @@ def main():
                 direction = "backward"
                 fc.forward(10)
                 time.sleep(0.1)
-            elif path[i] == (1, 0):
+            elif path[i] == [1, 0]:
                 if direction == "left":
                     fc.turn_left(10)
                     time.sleep(2)
